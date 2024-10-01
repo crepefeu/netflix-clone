@@ -7,11 +7,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Response;
 
-class HomeController extends AbstractController
+class ListsController extends AbstractController
 {
-    #[Route(path: '/home', name: 'homepage')]
-    public function accueil(): Response
+    #[Route(path: '/my-lists', name: 'my_lists')]
+    public function myLists(): Response
     {
-        return $this->render(view: 'index.html.twig');
+        return $this->render(view: 'lists.html.twig');
     }
 }

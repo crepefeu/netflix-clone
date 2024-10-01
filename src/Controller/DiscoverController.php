@@ -7,11 +7,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Response;
 
-class HomeController extends AbstractController
+class DiscoverController extends AbstractController
 {
-    #[Route(path: '/home', name: 'homepage')]
+    #[Route(path: '/discover', name: 'discover')]
     public function accueil(): Response
     {
-        return $this->render(view: 'index.html.twig');
+        return $this->render(view: 'discover.html.twig');
     }
 }
