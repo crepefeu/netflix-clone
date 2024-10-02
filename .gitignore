@@ -26,3 +26,6 @@
 
 # node modules
 /templates/node_modules/
+
+# .env
+.env
