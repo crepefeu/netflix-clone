@@ -30,6 +30,9 @@ class User
     #[ORM\ManyToOne(inversedBy: 'users')]
     private ?Subscription $currentSubscription = null;
 
+    #[ORM\ManyToOne(inversedBy: 'userIdentifier')]
+    private ?Comment $comments = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -91,6 +94,18 @@ class User
     public function setCurrentSubscription(?Subscription $currentSubscription): static
     {
         $this->currentSubscription = $currentSubscription;
+
+        return $this;
+    }
+
+    public function getComments(): ?Comment
+    {
+        return $this->comments;
+    }
+
+    public function setComments(?Comment $comments): static
+    {
+        $this->comments = $comments;
 
         return $this;
     }

@@ -28,5 +28,4 @@
 /templates/node_modules/
 
 # .env
-/.env
 .env
