@@ -23,11 +23,9 @@ class Comment
     #[ORM\Column(enumType: CommentStatusEnum::class)]
     private ?CommentStatusEnum $status = null;
 
-    /**
-     * @var Collection<int, User>
-     */
-    #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'comments')]
-    private Collection $userIdentifier;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'comments')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $userIdentifier = null;
 
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'parentComment')]
     private ?self $childComments = null;
@@ -44,7 +42,6 @@ class Comment
 
     public function __construct()
     {
-        $this->userIdentifier = new ArrayCollection();
         $this->parentComment = new ArrayCollection();
     }
 
@@ -77,33 +74,14 @@ class Comment
         return $this;
     }
 
-    /**
-     * @return Collection<int, User>
-     */
-    public function getUserIdentifier(): Collection
+    public function getUserIdentifier(): ?User
     {
         return $this->userIdentifier;
     }
 
-    public function addUserIdentifier(User $userIdentifier): static
+    public function setUserIdentifier(?User $userIdentifier): static
     {
-        if (!$this->userIdentifier->contains($userIdentifier)) {
-            $this->userIdentifier->add($userIdentifier);
-            $userIdentifier->setComments($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUserIdentifier(User $userIdentifier): static
-    {
-        if ($this->userIdentifier->removeElement($userIdentifier)) {
-            // set the owning side to null (unless already changed)
-            if ($userIdentifier->getComments() === $this) {
-                $userIdentifier->setComments(null);
-            }
-        }
-
+        $this->userIdentifier = $userIdentifier;
         return $this;
     }
 

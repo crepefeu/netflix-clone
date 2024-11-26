@@ -1,0 +1,22 @@
+App\Entity\Comment:
+    # Base comments without parent/child relationships
+    comment{1..30}:
+        content: '<paragraph(1, true)>'
+        status: '@=constant("App\\Enum\\CommentStatusEnum::PUBLISHED")'
+        media: '@media*'
+        userIdentifier: '@user*'
+
+    # Parent comments
+    comment_parent{1..10}:
+        content: '<paragraph(1, true)>'
+        status: '@=constant("App\\Enum\\CommentStatusEnum::PUBLISHED")'
+        media: '@media*'
+        userIdentifier: '@user*'
+
+    # Child comments referencing parents
+    comment_child{1..20}:
+        content: '<paragraph(1, true)>'
+        status: '@=constant("App\\Enum\\CommentStatusEnum::PUBLISHED")'
+        media: '@media*'
+        userIdentifier: '@user*'
+        parentComment: '@comment_parent*'
