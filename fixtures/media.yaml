@@ -1,0 +1,38 @@
+App\Entity\Media:
+  media (template):
+    shortDescription: '<sentence(10)>'
+    longDescription: '<sentence(15)>'
+    releaseDate: '<dateTimeBetween("-5 years", "now")>'
+    coverImage: '<imageUrl(640, 480, "cats")>'
+    category:
+      - '@category_action'
+      - '@category_aventure'
+    # language:
+    #   - '@language_french'
+    #   - '@language_english'
+
+App\Entity\Movie:
+  movie{1..50} (extends media):
+    title: 'Film <current()> - <name()>'
+
+App\Entity\Serie:
+  serie{1..50} (extends media):
+    title: 'Serie <current()> - <name()>'
+
+App\Entity\Season:
+  season_1_{@serie*}:
+    seasonNumber: '<numberBetween(1, 10)>'
+    serie: '<current()>'
+  season_2_{@serie*}:
+    seasonNumber: '<numberBetween(1, 10)>'
+    serie: '<current()>'
+  season_3_{@serie*}:
+    seasonNumber: '<numberBetween(1, 10)>'
+    serie: '<current()>'
+
+App\Entity\Episode:
+  episode{1..50}:
+    title: 'Episode <numberBetween(1, 10)>'
+    duration: '<dateTimeBetween("-5 years", "now")>'
+    releaseDate: '<dateTimeBetween("-5 years", "now")>'
+    season: '@season*'

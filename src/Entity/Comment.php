@@ -29,10 +29,6 @@ class Comment
     #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'comments')]
     private Collection $userIdentifier;
 
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Media $media = null;
-
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'parentComment')]
     private ?self $childComments = null;
 
@@ -41,6 +37,10 @@ class Comment
      */
     #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'childComments')]
     private Collection $parentComment;
+
+    #[ORM\ManyToOne(inversedBy: 'comments')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Media $media = null;
 
     public function __construct()
     {
@@ -107,18 +107,6 @@ class Comment
         return $this;
     }
 
-    public function getMedia(): ?Media
-    {
-        return $this->media;
-    }
-
-    public function setMedia(?Media $media): static
-    {
-        $this->media = $media;
-
-        return $this;
-    }
-
     public function getChildComments(): ?self
     {
         return $this->childComments;
@@ -157,6 +145,18 @@ class Comment
                 $parentComment->setChildComments(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMedia(): ?Media
+    {
+        return $this->media;
+    }
+
+    public function setMedia(?Media $media): static
+    {
+        $this->media = $media;
 
         return $this;
     }

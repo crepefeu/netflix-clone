@@ -5,21 +5,22 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Repository\CategoryRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Response;
 
-class DiscoverController extends AbstractController
+class CategoryController extends AbstractController
 {
-    #[Route(path: '/discover', name: 'discover')]
-    public function discover(
-        EntityManagerInterface $entityManager,
+    #[Route(path: '/category/{id}', name: 'category')]
+    public function category(
+        string $id,
         CategoryRepository $categoryRepository
     ): Response {
+        // Find the category with the given id
+        $category = $categoryRepository->find($id);
         $categories = $categoryRepository->findAll();
-        return $this->render(view: 'discover.html.twig', parameters: [
-            'categories' => $categories
+        return $this->render(view: 'category.html.twig', parameters: [
+            'category' => $category, 'categories' => $categories
         ]);
     }
 }

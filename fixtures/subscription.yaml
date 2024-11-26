@@ -1,0 +1,30 @@
+App\Entity\Subscription:
+  subscription_basic:
+    name: 'Basic'
+    price: '8.99'
+    durationInMonths: 1
+
+  subscription_standard:
+    name: 'Standard'
+    price: '13.49'
+    durationInMonths: 1
+
+  subscription_premium:
+    name: 'Premium'
+    price: '17.99'
+    durationInMonths: 1
+
+  subscription_basic_annual:
+    name: 'Basic Annual'
+    price: '89.90'
+    durationInMonths: 12
+
+  subscription_standard_annual:
+    name: 'Standard Annual'
+    price: '134.90'
+    durationInMonths: 12
+
+  subscription_premium_annual:
+    name: 'Premium Annual'
+    price: '179.90'
+    durationInMonths: 12

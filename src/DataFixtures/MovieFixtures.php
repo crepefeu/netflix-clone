@@ -17,6 +17,9 @@ class MovieFixtures extends Fixture
             $movie = new Movie();
             $movie->setTitle($faker->sentence(3));
             $movie->setReleaseDate($faker->dateTimeThisCentury());
+            $movie->setShortDescription($faker->text(10));
+            $movie->setLongDescription($faker->text(100));
+            $movie->setCoverImage($faker->imageUrl());
 
 
             $manager->persist($movie);
