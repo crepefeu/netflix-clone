@@ -27,22 +27,29 @@ class Comment
     #[ORM\JoinColumn(nullable: false)]
     private ?User $userIdentifier = null;
 
-    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'parentComment')]
-    private ?self $childComments = null;
+    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'children')]
+    private ?self $parent = null;
 
     /**
      * @var Collection<int, self>
      */
-    #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'childComments')]
-    private Collection $parentComment;
+    #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'parent')]
+    private Collection $children;
 
     #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Media $media = null;
 
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    private ?\DateTimeImmutable $updatedAt = null;
+
     public function __construct()
     {
-        $this->parentComment = new ArrayCollection();
+        $this->children = new ArrayCollection();
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -85,45 +92,38 @@ class Comment
         return $this;
     }
 
-    public function getChildComments(): ?self
+    public function getParent(): ?self
     {
-        return $this->childComments;
+        return $this->parent;
     }
 
-    public function setChildComments(?self $childComments): static
+    public function setParent(?self $parent): static
     {
-        $this->childComments = $childComments;
-
+        $this->parent = $parent;
         return $this;
     }
 
-    /**
-     * @return Collection<int, self>
-     */
-    public function getParentComment(): Collection
+    public function getChildren(): Collection
     {
-        return $this->parentComment;
+        return $this->children;
     }
 
-    public function addParentComment(self $parentComment): static
+    public function addChild(self $child): static
     {
-        if (!$this->parentComment->contains($parentComment)) {
-            $this->parentComment->add($parentComment);
-            $parentComment->setChildComments($this);
+        if (!$this->children->contains($child)) {
+            $this->children->add($child);
+            $child->setParent($this);
         }
-
         return $this;
     }
 
-    public function removeParentComment(self $parentComment): static
+    public function removeChild(self $child): static
     {
-        if ($this->parentComment->removeElement($parentComment)) {
-            // set the owning side to null (unless already changed)
-            if ($parentComment->getChildComments() === $this) {
-                $parentComment->setChildComments(null);
+        if ($this->children->removeElement($child)) {
+            if ($child->getParent() === $this) {
+                $child->setParent(null);
             }
         }
-
         return $this;
     }
 
@@ -136,6 +136,28 @@ class Comment
     {
         $this->media = $media;
 
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    {
+        $this->createdAt = $createdAt;
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
         return $this;
     }
 }
