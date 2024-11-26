@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Enum\UserAccountStatusEnum;
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -30,8 +32,16 @@ class User
     #[ORM\ManyToOne(inversedBy: 'users')]
     private ?Subscription $currentSubscription = null;
 
-    #[ORM\ManyToOne(inversedBy: 'userIdentifier')]
-    private ?Comment $comments = null;
+    /**
+     * @var Collection<int, Comment>
+     */
+    #[ORM\OneToMany(mappedBy: 'userIdentifier', targetEntity: Comment::class)]
+    private Collection $comments;
+
+    public function __construct()
+    {
+        $this->comments = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -98,15 +108,30 @@ class User
         return $this;
     }
 
-    public function getComments(): ?Comment
+    /**
+     * @return Collection<int, Comment>
+     */
+    public function getComments(): Collection
     {
         return $this->comments;
     }
 
-    public function setComments(?Comment $comments): static
+    public function addComment(Comment $comment): static
     {
-        $this->comments = $comments;
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+            $comment->setUserIdentifier($this);
+        }
+        return $this;
+    }
 
+    public function removeComment(Comment $comment): static
+    {
+        if ($this->comments->removeElement($comment)) {
+            if ($comment->getUserIdentifier() === $this) {
+                $comment->setUserIdentifier(null);
+            }
+        }
         return $this;
     }
 }

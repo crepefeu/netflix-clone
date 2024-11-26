@@ -7,9 +7,6 @@ App\Entity\Media:
     category:
       - '@category_action'
       - '@category_aventure'
-    # language:
-    #   - '@language_french'
-    #   - '@language_english'
 
 App\Entity\Movie:
   movie{1..50} (extends media):
