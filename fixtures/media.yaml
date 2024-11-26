@@ -3,7 +3,7 @@ App\Entity\Media:
     shortDescription: '<sentence(10)>'
     longDescription: '<sentence(15)>'
     releaseDate: '<dateTimeBetween("-5 years", "now")>'
-    coverImage: '<imageUrl(640, 480, "cats")>'
+    coverImage: 'https://picsum.photos/seed/<current()>/800/450'
     category:
       - '@category_action'
       - '@category_aventure'
