@@ -49,7 +49,8 @@ class Media
     /**
      * @var Collection<int, Category>
      */
-    #[ORM\ManyToMany(targetEntity: Category::class)]
+    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'medias')]
+    #[ORM\JoinTable(name: 'media_category')]
     private Collection $category;
 
     /**
@@ -205,5 +206,14 @@ class Media
         }
 
         return $this;
+    }
+
+    public function getMediaType(): string 
+    {
+        return match(true) {
+            $this instanceof Movie => 'movie',
+            $this instanceof Serie => 'serie',
+            default => 'unknown'
+        };
     }
 }
