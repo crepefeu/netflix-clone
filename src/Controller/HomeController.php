@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class HomeController extends AbstractController
 {
-    #[Route(path: '/home', name: 'homepage')]
+    #[Route(path: '/', name: 'homepage')]
     public function accueil(): Response
     {
         return $this->render(view: 'index.html.twig');
